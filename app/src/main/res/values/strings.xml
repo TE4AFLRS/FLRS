@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FLRS</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">ホーム</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">アラート</string>
+    <string name="title_activity_page_configuration">MainActivity</string>
+    <string name="title_insert">食品追加</string>
 </resources>
