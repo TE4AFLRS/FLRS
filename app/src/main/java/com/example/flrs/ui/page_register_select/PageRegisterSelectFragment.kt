@@ -33,7 +33,7 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
         buttonManual.setOnClickListener {
             val insertfragment = PageInsertFragment()
             // 今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする //
-            transaction.addToBackStack(null)
+            transaction.addToBackStack("PageRegisterSelectFragment")
 
 
             // R.id.FragmentContainerに入っているFragmentを取り除いて、新しく別のFragmentを入れる //

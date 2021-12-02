@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import com.example.flrs.R
 
-class PageInsertFragment : Fragment() {
+class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
 
     companion object {
         fun newInstance() = PageInsertFragment()
@@ -17,16 +20,19 @@ class PageInsertFragment : Fragment() {
 
     private lateinit var viewModel: PageInsertViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_page_insert, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageInsertViewModel::class.java)
         // TODO: Use the ViewModel
-        childFragmentManager.popBackStack()
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            parentFragmentManager.popBackStack()
+
+        }
+
+
     }
+
+
 
 }
