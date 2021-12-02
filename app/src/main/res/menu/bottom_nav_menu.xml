@@ -8,9 +8,9 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_insert"
-        android:icon="@drawable/ic_insert_black_24dp"
-        android:title="@string/title_insert" />
+        android:id="@+id/navigation_page_register_select"
+        android:icon="@drawable/ic_page_register_select_black_24dp"
+        android:title="@string/title_page_register_select" />
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"

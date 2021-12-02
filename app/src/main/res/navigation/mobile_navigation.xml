@@ -17,8 +17,18 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
-        android:id="@+id/navigation_insert"
-        android:name="com.example.flrs.ui.insert.InsertFragment"
-        android:label="@string/title_insert"
-        tools:layout="@layout/fragment_insert" />
+        android:id="@+id/navigation_page_register_select"
+        android:name="com.example.flrs.ui.page_register_select.PageRegisterSelectFragment"
+        android:label="@string/title_page_register_select"
+        tools:layout="@layout/fragment_page_register_select" />
+    <fragment
+        android:id="@+id/page_insert_fragment"
+        android:name="com.example.flrs.ui.page_insert.PageInsertFragment"
+        android:label="fragment_page_insert"
+        tools:layout="@layout/fragment_page_insert" />
+    <fragment
+        android:id="@+id/page_camera_fragment"
+        android:name="com.example.flrs.ui.page_camera.PageCameraFragment"
+        android:label="fragment_page_camera"
+        tools:layout="@layout/fragment_page_camera" />
 </navigation>
