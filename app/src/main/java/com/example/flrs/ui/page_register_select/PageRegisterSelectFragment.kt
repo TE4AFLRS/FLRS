@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.flrs.R
+import com.example.flrs.ui.page_camera.PageCameraFragment
 import com.example.flrs.ui.page_insert.PageInsertFragment
 
 class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_select) {
@@ -30,23 +31,22 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
         val transaction = parentFragmentManager.beginTransaction()
         parentFragmentManager.saveFragmentInstanceState(this)
 
+        // 今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする //
+        transaction.addToBackStack("PageRegisterSelectFragment")
+
         buttonManual.setOnClickListener {
-            val insertfragment = PageInsertFragment()
-            // 今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする //
-            transaction.addToBackStack("PageRegisterSelectFragment")
-
-
+            val insertFragment = PageInsertFragment()
             // R.id.FragmentContainerに入っているFragmentを取り除いて、新しく別のFragmentを入れる //
-            transaction.replace(R.id.nav_host_fragment, insertfragment)
+            transaction.replace(R.id.nav_host_fragment, insertFragment)
             transaction.commit()
-
-
         }
 
-//        viewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//
-//        })
+        buttonCamera.setOnClickListener {
+            val cameraFragment = PageCameraFragment()
+            transaction.replace(R.id.nav_host_fragment,cameraFragment)
+            transaction.commit()
+        }
+
         // TODO: Use the ViewModel
     }
 

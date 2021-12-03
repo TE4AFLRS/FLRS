@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import com.example.flrs.R
+import com.example.flrs.ui.page_insert.PageInsertViewModel
 
-class PageCameraFragment : Fragment() {
+class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
     companion object {
         fun newInstance() = PageCameraFragment()
@@ -16,17 +18,14 @@ class PageCameraFragment : Fragment() {
 
     private lateinit var viewModel: PageCameraViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_page_camera, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
         // TODO: Use the ViewModel
-    }
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            parentFragmentManager.popBackStack()
+        }
 
+
+    }
 }
