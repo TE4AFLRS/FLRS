@@ -20,7 +20,6 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
 
     private lateinit var viewModel: PageInsertViewModel
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageInsertViewModel::class.java)
