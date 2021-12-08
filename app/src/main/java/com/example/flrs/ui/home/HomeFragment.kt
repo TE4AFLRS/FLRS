@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.flrs.FoodsDao
+import com.example.flrs.FoodsDatabase
 import com.example.flrs.R
 import com.example.flrs.RowModel
 
@@ -23,7 +25,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    var db_List = mutableListOf<RowModel>()
+    var db_list = mutableListOf<RowModel>()
     lateinit var mFoodsDao: FoodsDao
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,10 +33,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // TODO: Use the ViewModel
 
-        mFoodsDao = FoodsDatabase.getInstance(this).foodsDao()
+        mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
         val rv = view.findViewById<RecyclerView>(R.id.food_recyclerview)
-        val adapter = ViewAdapter(db_list, object : ViewAdapter.ListListener {})
+        val adapter = HomeViewAdapter(db_list)
 
         rv.setHasFixedSize(true)
         rv.layoutManager =
@@ -73,7 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 //スワイプ時に実行
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     //データリストからスワイプしたデータを削除
-                    db_List.removeAt(viewHolder.adapterPosition)
+                    db_list.removeAt(viewHolder.adapterPosition)
                     System.out.println("このIDを消したよ" + viewHolder.itemId)
                     //リストからスワイプしたカードを削除
                     adapter.notifyItemRemoved(viewHolder.adapterPosition)

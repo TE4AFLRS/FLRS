@@ -1,8 +1,6 @@
 package com.example.flrs
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "Foods",
@@ -11,8 +9,7 @@ import androidx.room.PrimaryKey
             entity = Categories::class,
             parentColumns = arrayOf("category_id"),
             childColumns = arrayOf("category_id"),
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE)
     )
 )
 data class Foods(
@@ -20,7 +17,7 @@ data class Foods(
     val food_id: Int,
 
     var food_name: String,
-
+    @ColumnInfo(index = true)
     var category_id: Int,
 
     var register_date: String
