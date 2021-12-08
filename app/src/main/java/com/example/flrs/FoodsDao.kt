@@ -4,8 +4,8 @@ import androidx.room.*
 import androidx.room.Dao
 
 @Dao
-interface Dao {
-    @Query("SELECT * FROM Foods")
+interface FoodsDao {
+    @Query("SELECT food_name,register_date FROM Foods,Categories WHERE Foods.category_id=Categories.category_id")
     fun getAll():List<RowModel>
 
     @Insert
