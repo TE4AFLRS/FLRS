@@ -28,10 +28,5 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
             parentFragmentManager.popBackStack()
 
         }
-
-
     }
-
-
-
 }

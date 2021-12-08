@@ -4,4 +4,6 @@
     <string name="title_notifications">設定</string>
     <string name="title_activity_page_configuration">MainActivity</string>
     <string name="title_page_register_select">食品追加</string>
+    <string name="text_register_date">登録日：</string>
+    <string name="text_limit_date">期限日：</string>
 </resources>
