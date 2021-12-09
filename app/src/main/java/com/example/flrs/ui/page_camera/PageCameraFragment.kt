@@ -25,7 +25,5 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             parentFragmentManager.popBackStack()
         }
-
-
     }
 }
