@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -12,10 +13,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Delete
 import com.example.flrs.FoodsDao
 import com.example.flrs.FoodsDatabase
 import com.example.flrs.R
 import com.example.flrs.RowModel
+import kotlin.math.log
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -35,6 +38,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
+
+        System.out.println("ROWMODEL"+db_list)
+        for (i in db_list){
+            Log.d("TAG",i.toString())
+        }
+
+        db_list
         val rv = view.findViewById<RecyclerView>(R.id.food_recyclerview)
         val adapter = HomeViewAdapter(db_list)
 
@@ -57,6 +67,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
     }
+
+    @Delete
+    private fun deleteFoods(foodsId:Int){
+        if(db_list.isEmpty())return
+
+
+    }
+
+
 
     //カードのスワイプアクションの定義
     private fun getSwipeToDismissTouchHelper(adapter: RecyclerView.Adapter<HomeViewHolder>) =
