@@ -69,10 +69,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     @Delete
-    private fun deleteFoods(foodsId:Int){
+    private fun deleteFoods(position:Int){
         if(db_list.isEmpty())return
-
-
+        val deleteFoods:Int =  db_list.get(position).food_id.toInt()
+        mFoodsDao.delete(deleteFoods)
     }
 
 
@@ -94,7 +94,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 //スワイプ時に実行
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     //データリストからスワイプしたデータを削除
+                    deleteFoods(viewHolder.bindingAdapterPosition)
                     db_list.removeAt(viewHolder.adapterPosition)
+
                     System.out.println("このIDを消したよ" + viewHolder.itemId)
                     //リストからスワイプしたカードを削除
                     adapter.notifyItemRemoved(viewHolder.adapterPosition)
