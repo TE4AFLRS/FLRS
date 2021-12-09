@@ -5,5 +5,7 @@
     <string name="title_activity_page_configuration">MainActivity</string>
     <string name="title_page_register_select">食品追加</string>
     <string name="text_register_date">登録日：</string>
-    <string name="text_limit_date">期限日：</string>
+    <string name="textedit_food_name">食品名</string>
+    <string name="button_delete">削除</string>
+
 </resources>
