@@ -13,6 +13,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.flrs.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
 class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
@@ -33,12 +34,16 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         }
 
         val vg = view.findViewById<View>(R.id.ResisterField) as ViewGroup
-        for (i in 1..20) {
-            // 行を追加
-            layoutInflater.inflate(R.layout.fragment_page_insert_table_row, vg)
-            // 文字設定
-            val tr: TableRow = vg.getChildAt(i) as TableRow
-            val str: String = java.lang.String.format(Locale.getDefault(), "raw%d", i + 1)
+        val fab:FloatingActionButton = view.findViewById(R.id.insert_fab)
+
+        layoutInflater.inflate(R.layout.page_insert_table_row, vg)
+        // 行を追加
+        fab.setOnClickListener {
+            layoutInflater.inflate(R.layout.page_insert_table_row, vg)
         }
+
+
+
+
     }
 }
