@@ -21,7 +21,8 @@ class HomeViewAdapter(private val list: List<RowModel>) :
         holder.foodNameView.text=list[position].food_name
         var date : LocalDate = LocalDate.parse(list[position].register_date)
         holder.foodRegisterDateView.text = list[position].register_date
-        holder.foodLimitDateView.text = date.plusDays(30).toString()
+        var period:Long =list[position].period.toLong()
+        holder.foodLimitDateView.text = date.plusDays(period).toString()
     }
     override fun getItemCount(): Int {
         Log.d("Life Cycle", "getItemCount")

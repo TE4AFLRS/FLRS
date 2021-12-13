@@ -5,7 +5,7 @@ import androidx.room.Dao
 
 @Dao
 interface FoodsDao {
-    @Query("SELECT food_id, food_name,register_date FROM Foods,Categories WHERE Foods.category_id=Categories.category_id")
+    @Query("SELECT food_id, food_name,register_date,period FROM Foods,Categories WHERE Foods.category_id=Categories.category_id")
     fun getAll():List<RowModel>
       @Insert
       fun insert(foods: Foods)
