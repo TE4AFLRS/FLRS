@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TableRow
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.addCallback
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -33,17 +31,21 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
 
         }
 
-        val vg = view.findViewById<View>(R.id.ResisterField) as ViewGroup
-        val fab:FloatingActionButton = view.findViewById(R.id.insert_fab)
-
-        layoutInflater.inflate(R.layout.page_insert_table_row, vg)
+        val linearLayout = view.findViewById<View>(R.id.scrollView2) as LinearLayout
+        val fab: FloatingActionButton = view.findViewById(R.id.insert_fab)
+        layoutInflater.inflate(R.layout.page_insert_table_row, linearLayout)
         // 行を追加
         fab.setOnClickListener {
-            layoutInflater.inflate(R.layout.page_insert_table_row, vg)
+            layoutInflater.inflate(R.layout.page_insert_table_row, linearLayout)
+            var button = ImageButton(context)
+            var id: Int = View.generateViewId()
+            button.id = id
+            print(button.id)
+            val tr = linearLayout.getChildAt(id) as TableRow;
+            (tr.getChildAt(1) as ImageButton)?.setOnClickListener {
+                // buttonをクリックした際の処理を記述
+                linearLayout.removeView()
+            }
         }
-
-
-
-
     }
 }
