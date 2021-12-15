@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TableRow
 import androidx.activity.addCallback
 import com.example.flrs.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,12 +39,12 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
 //            var id: Int = View.generateViewId()
 //            button.id = id
 //            print(button.id)
-            val tr = vg.getChildAt(id) as TableRow;
-            (tr.getChildAt(1) as ImageButton)?.setOnClickListener {
-                // buttonをクリックした際の処理を記述
-                vg.removeView()
 
+            val ll = vg.getChildAt(1) as LinearLayout
+            (ll.getChildAt(0)as ImageButton)?.setOnClickListener{
+                vg.removeViewAt(1)
             }
         }
+
     }
 }
