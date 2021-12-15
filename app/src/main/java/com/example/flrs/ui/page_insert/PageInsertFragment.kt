@@ -2,6 +2,7 @@ package com.example.flrs.ui.page_insert
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
@@ -34,16 +35,12 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         layoutInflater.inflate(R.layout.page_insert_table_row, vg)
         // 行を追加
         fab.setOnClickListener {
-            layoutInflater.inflate(R.layout.page_insert_table_row, vg)
-//            var button = ImageButton(context)
-//            var id: Int = View.generateViewId()
-//            button.id = id
-//            print(button.id)
-
-            val ll = vg.getChildAt(1) as LinearLayout
-            (ll.getChildAt(0)as ImageButton)?.setOnClickListener{
-                vg.removeViewAt(1)
+            val view = layoutInflater.inflate(R.layout.page_insert_table_row, vg) as LinearLayout
+            val row = (view.getChildAt(view.childCount - 1) as LinearLayout)
+            (row.getChildAt(0)  as ImageButton)?.setOnClickListener{
+                vg.removeView(row)
             }
+
         }
 
     }
