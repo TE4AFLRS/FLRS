@@ -45,6 +45,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
             (tr.getChildAt(1) as ImageButton)?.setOnClickListener {
                 // buttonをクリックした際の処理を記述
                 linearLayout.removeView()
+
             }
         }
     }
