@@ -5,9 +5,9 @@ import androidx.room.Dao
 
 @Dao
 interface CategoriesDao {
-//    @Query("SELECT * FROM Categories")
-//    fun getAll():List<RowModel>
-//
+    @Query("SELECT category_id,category_name FROM Categories")
+    fun getAll():List<CategoryRow>
+
 //    @Insert
 //    fun insert(category: Categories)
 //    @Update
