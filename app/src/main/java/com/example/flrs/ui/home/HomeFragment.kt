@@ -39,10 +39,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
 
-        System.out.println("ROWMODEL"+db_list)
-        for (i in db_list){
-            Log.d("TAG",i.toString())
-        }
 
         db_list
         val rv = view.findViewById<RecyclerView>(R.id.food_recyclerview)
