@@ -36,7 +36,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         mCategoriesDao =FoodsDatabase.getInstance(requireContext()).categoriesDao()
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         var list:List<CategoryRow> = mCategoriesDao.getAll()
-        val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,list.map{it.category_name})
+        val adapter = ArrayAdapter(requireContext(),R.layout.spinner_item,list.map{it.category_name})
 
         val saveButton = view.findViewById<Button>(R.id.save_button)
         val vg = view.findViewById<View>(R.id.insert_table) as ViewGroup
