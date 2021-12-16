@@ -41,19 +41,12 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         val saveButton = view.findViewById<Button>(R.id.save_button)
         val vg = view.findViewById<View>(R.id.insert_table) as ViewGroup
         val fab: FloatingActionButton = view.findViewById(R.id.insert_fab)
-        layoutInflater.inflate(R.layout.page_insert_table_row, vg)
-        val spinner:Spinner = view.findViewById(R.id.spinner)
-        spinner.adapter = adapter
+
+        addNewRow(vg, adapter)
 
         // 行を追加
         fab.setOnClickListener {
-            val table = layoutInflater.inflate(R.layout.page_insert_table_row, vg) as LinearLayout
-            val row = (table.getChildAt(table.childCount - 1) as LinearLayout)
-            val spinner:Spinner = row.findViewById(R.id.spinner)
-            spinner.adapter = adapter
-            (row.getChildAt(0)  as ImageButton)?.setOnClickListener{
-                vg.removeView(row)
-            }
+            addNewRow(vg, adapter)
         }
 
         saveButton.setOnClickListener {
@@ -69,6 +62,18 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
             // R.id.FragmentContainerに入っているFragmentを取り除いて、新しく別のFragmentを入れる //
             transaction.replace(R.id.nav_host_fragment, homeFragment)
             transaction.commit()
+        }
+    }
+
+    private fun addNewRow(vg: ViewGroup, adapter: ArrayAdapter<String>) {
+        val table = layoutInflater.inflate(R.layout.page_insert_table_row, vg) as LinearLayout
+        val row = (table.getChildAt(table.childCount - 1) as LinearLayout)
+        val spinner:Spinner = row.findViewById(R.id.spinner)
+        spinner.adapter = adapter
+        (row.getChildAt(0)  as ImageButton)?.setOnClickListener{
+            if (table.childCount > 1) {
+                vg.removeView(row)
+            }
         }
     }
 
