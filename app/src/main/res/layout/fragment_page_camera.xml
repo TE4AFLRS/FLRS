@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.page_camera.PageCameraFragment">
 
-    <TextureView
-        android:id="@+id/textureView"
-        android:layout_width="389dp"
-        android:layout_height="540dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/photoButton"
         android:layout_width="wrap_content"
@@ -27,12 +19,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
+        android:layout_width="259dp"
+        android:layout_height="424dp"
+        android:layout_marginBottom="212dp"
         app:layout_constraintBottom_toBottomOf="@+id/photoButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@tools:sample/avatars" />
 

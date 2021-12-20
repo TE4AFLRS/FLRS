@@ -3,8 +3,12 @@ package com.example.flrs.ui.page_camera
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.media.ExifInterface.ORIENTATION_ROTATE_180
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.TextureView
 import androidx.fragment.app.Fragment
@@ -15,6 +19,10 @@ import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.flrs.R
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
@@ -75,9 +83,44 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         data?.extras?.get("data")?.let {
-            imageView.setImageBitmap(it as Bitmap)
+
+            var bitmap:Bitmap = imageRotate(createImageFile(),it as Bitmap)
+            imageView.setImageBitmap(bitmap)
         }
+    }
+
+    lateinit var currentPhotoPath: String
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "TemporarySaving", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+
+    fun imageRotate(image: File, bitmap: Bitmap): Bitmap {
+        var exifinterface:ExifInterface = ExifInterface(image.absolutePath)
+        val matrix:Matrix? = null
+
+        var orientation:Int = exifinterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
+
+        when (orientation){
+            ExifInterface.ORIENTATION_NORMAL ->{}
+            ExifInterface.ORIENTATION_ROTATE_180 -> {matrix?.postRotate(180f)}
+            ExifInterface.ORIENTATION_ROTATE_90 -> {matrix?.postRotate(90f)}
+            ExifInterface.ORIENTATION_ROTATE_270 -> {matrix?.postRotate(-90f)}
+        }
+        var rotateBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix,true)
+        return rotateBitmap
+
     }
 }
