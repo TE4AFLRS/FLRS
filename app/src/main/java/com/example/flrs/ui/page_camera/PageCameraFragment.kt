@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.media.ExifInterface.ORIENTATION_ROTATE_180
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Environment
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.flrs.R
 import java.io.File
 import java.io.IOException
@@ -29,7 +31,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     companion object {
         fun newInstance() = PageCameraFragment()
     }
-
+    private val REQUEST_TAKE_PHOTO = 1
     private lateinit var viewModel: PageCameraViewModel
     private lateinit var  imageView:ImageView
     private val CAMERA_REQUEST_CODE = 1
@@ -74,18 +76,37 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     }
 
     private fun takePicture() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            addCategory(Intent.CATEGORY_DEFAULT)
+//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+//            addCategory(Intent.CATEGORY_DEFAULT)
+//        }
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = createImageFile()
+
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.example.android.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                }
+            }
         }
 
-        startActivityForResult(intent, CAMERA_REQUEST_CODE)
+
+        //startActivityForResult(intent, CAMERA_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        var image =data?.extras?.keySet()
         data?.extras?.get("data")?.let {
-
-            var bitmap:Bitmap = imageRotate(createImageFile(),it as Bitmap)
+            var bitmap:Bitmap = imageRotate(data?.extras?.get("EXTRA_OUTPUT") as File,it as Bitmap)
             imageView.setImageBitmap(bitmap)
         }
     }
@@ -108,7 +129,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
 
     fun imageRotate(image: File, bitmap: Bitmap): Bitmap {
-        var exifinterface:ExifInterface = ExifInterface(image.absolutePath)
+        var exifinterface = ExifInterface(image.absolutePath)
         val matrix:Matrix? = null
 
         var orientation:Int = exifinterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
