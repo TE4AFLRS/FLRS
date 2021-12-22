@@ -1,5 +1,6 @@
 package com.example.flrs.ui.page_camera
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -36,6 +37,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     private lateinit var  imageView:ImageView
     private val CAMERA_REQUEST_CODE = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
+    private  var photoUri:Uri? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
@@ -70,55 +72,49 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                takePicture()
+               takePicture()
             }
         }
     }
 
     private fun takePicture() {
-//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-//            addCategory(Intent.CATEGORY_DEFAULT)
-//        }
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
                 // Create the File where the photo should go
-                val photoFile: File? = createImageFile()
-
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
                 // Continue only if the File was successfully created
                 photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
+                    photoUri = FileProvider.getUriForFile(
                         requireContext(),
                         "com.example.android.fileprovider",
                         it
                     )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
                 }
             }
         }
-
-
-        //startActivityForResult(intent, CAMERA_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        var image =data?.extras?.keySet()
-        data?.extras?.get("data")?.let {
-            var bitmap:Bitmap = imageRotate(data?.extras?.get("EXTRA_OUTPUT") as File,it as Bitmap)
-            imageView.setImageBitmap(bitmap)
-        }
+        imageView.setImageURI(photoUri)
     }
 
     lateinit var currentPhotoPath: String
-
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            "TemporarySaving", /* prefix */
+            "JPEG_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
             storageDir /* directory */
         ).apply {
@@ -127,21 +123,4 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         }
     }
 
-
-    fun imageRotate(image: File, bitmap: Bitmap): Bitmap {
-        var exifinterface = ExifInterface(image.absolutePath)
-        val matrix:Matrix? = null
-
-        var orientation:Int = exifinterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
-
-        when (orientation){
-            ExifInterface.ORIENTATION_NORMAL ->{}
-            ExifInterface.ORIENTATION_ROTATE_180 -> {matrix?.postRotate(180f)}
-            ExifInterface.ORIENTATION_ROTATE_90 -> {matrix?.postRotate(90f)}
-            ExifInterface.ORIENTATION_ROTATE_270 -> {matrix?.postRotate(-90f)}
-        }
-        var rotateBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.width,bitmap.height,matrix,true)
-        return rotateBitmap
-
-    }
 }
