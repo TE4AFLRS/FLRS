@@ -1,18 +1,15 @@
 package com.example.flrs.ui.page_camera
 
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.media.ExifInterface.ORIENTATION_ROTATE_180
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.TextureView
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
@@ -21,6 +18,7 @@ import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.example.flrs.R
 import java.io.File
 import java.io.IOException
@@ -33,11 +31,13 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         fun newInstance() = PageCameraFragment()
     }
     private val REQUEST_TAKE_PHOTO = 1
+    private val PIC_VAL = 2
     private lateinit var viewModel: PageCameraViewModel
     private lateinit var  imageView:ImageView
     private val CAMERA_REQUEST_CODE = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
     private  var photoUri:Uri? = null
+    private var timeStamp:String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
@@ -104,14 +104,47 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        imageView.setImageURI(photoUri)
+        //imageView.setImageURI(photoUri)
+        var bitmap:Bitmap? = null
+        when(requestCode){
+            REQUEST_TAKE_PHOTO->{
+                var values = ContentValues()
+                values.put(MediaStore.Images.Media.TITLE,"JPEG_${timeStamp}_.jpg")
+                values.put(MediaStore.Images.Media.MIME_TYPE,"image/jpeg")
+                val contentResolver = requireContext().contentResolver
+
+                var bitmapUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values)
+
+                val cropIntent = Intent("com.android.camera.action.CROP")
+//                cropIntent.setDataAndType(bitmapUri,"image/jpg")
+                cropIntent.putExtra("crop",bitmapUri)
+
+                //aspect
+                cropIntent.putExtra("aspectX",4)
+                cropIntent.putExtra("aspectY",3)
+
+                //output
+                cropIntent.putExtra("outputX",256)
+                cropIntent.putExtra("outputY",181)
+
+                cropIntent.putExtra("return-data",true)
+
+                startActivityForResult(Intent.createChooser(cropIntent,"Complete action using"),PIC_VAL)
+            }
+            PIC_VAL->{
+                var extras:Bundle? = data?.extras
+                bitmap =extras?.getParcelable("data")
+                imageView.setImageBitmap(bitmap)
+            }
+
+        }
     }
 
     lateinit var currentPhotoPath: String
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
