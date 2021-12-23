@@ -71,7 +71,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     }
 
     private fun grantCameraPermission() = activity?.let {
-        ActivityCompat.requestPermissions(it, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        requestPermissions( arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
