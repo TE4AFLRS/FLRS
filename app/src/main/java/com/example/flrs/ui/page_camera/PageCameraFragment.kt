@@ -1,6 +1,9 @@
 package com.example.flrs.ui.page_camera
 
+import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
 import android.content.ContentValues
+import com.yalantis.ucrop.UCrop
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -20,7 +23,10 @@ import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getCodeCacheDir
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.example.flrs.R
 import java.io.File
 import java.io.IOException
@@ -38,6 +44,8 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     private val CAMERA_REQUEST_CODE = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
     private  var photoUri:Uri? = null
+    private  var timeStamp:String? = null
+    private  var bitmapUri:Uri? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
@@ -104,14 +112,24 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        imageView.setImageURI(photoUri)
+        if(requestCode == REQUEST_TAKE_PHOTO){
+            openCropImage(photoUri)
+        }else if(requestCode == UCrop.REQUEST_CROP){
+            if(resultCode == RESULT_OK){
+                val resultUri = UCrop.getOutput(data!!)
+                if(resultUri != null) {
+                    // TODO: 画像を使う処理を書く
+                    imageView.setImageURI(resultUri)
+                }
+            }
+        }
     }
 
     lateinit var currentPhotoPath: String
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_", /* prefix */
@@ -123,4 +141,29 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         }
     }
 
+    private fun openCropImage(uri:Uri?){
+//        val cropFile = uri?.toFile()
+        val fileName = "crop.jpg"
+        val cropFile = File(requireContext().cacheDir,fileName)
+//        val cropFile = File(uri?.path)
+        cropFile?.let { file ->
+            val cropUri = Uri.fromFile(file)
+            var uCrop =  UCrop.of(uri!!, cropUri)
+
+            //uCropのオプションを設定
+            val options = UCrop.Options()
+            options.setToolbarTitle("画像切り出し画面")
+            options.setToolbarWidgetColor(getColor(requireContext(),android.R.color.white))
+            options.setToolbarColor(getColor(requireContext(),android.R.color.holo_blue_dark))
+            options.setStatusBarColor(getColor(requireContext(),R.color.design_default_color_primary_dark))
+            options.setActiveControlsWidgetColor(getColor(requireContext(),R.color.design_default_color_on_secondary))
+            options.setCompressionFormat(Bitmap.CompressFormat.JPEG)
+            options.setCompressionQuality(100)
+            options.setHideBottomControls(false)
+            options.setFreeStyleCropEnabled(true)
+            uCrop = uCrop.withOptions(options)
+            uCrop.start(requireContext(),this,UCrop.REQUEST_CROP)
+
+        }
+    }
 }
