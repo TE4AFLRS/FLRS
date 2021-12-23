@@ -7,15 +7,11 @@ import com.yalantis.ucrop.UCrop
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.media.ExifInterface.ORIENTATION_ROTATE_180
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.TextureView
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
@@ -39,6 +35,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         fun newInstance() = PageCameraFragment()
     }
     private val REQUEST_TAKE_PHOTO = 1
+    private val PIC_VAL = 2
     private lateinit var viewModel: PageCameraViewModel
     private lateinit var  imageView:ImageView
     private val CAMERA_REQUEST_CODE = 1
