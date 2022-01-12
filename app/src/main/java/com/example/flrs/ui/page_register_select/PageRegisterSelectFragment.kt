@@ -36,11 +36,11 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
         val transaction = parentFragmentManager.beginTransaction()
         parentFragmentManager.saveFragmentInstanceState(this)
 
-        // 今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする //
-//        transaction.addToBackStack("PageRegisterSelectFragment")
+         //今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする
+        transaction.addToBackStack("PageRegisterSelectFragment")
 
         buttonManual.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_page_register_select_to_page_insert_fragment2)
+            findNavController().navigate(R.id.action_navigation_page_register_select_to_page_insert_fragment)
 
 //            val insertFragment = PageInsertFragment()
 //            // R.id.FragmentContainerに入っているFragmentを取り除いて、新しく別のFragmentを入れる //
@@ -80,7 +80,7 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
         }
     }
     private  fun cameraTransition(){
-        findNavController().navigate(R.id.action_navigation_page_register_select_to_page_camera_fragment2)
+        findNavController().navigate(R.id.action_navigation_page_register_select_to_page_camera_fragment)
 //        val transaction = parentFragmentManager.beginTransaction()
 //        parentFragmentManager.saveFragmentInstanceState(this)
 //        val cameraFragment = PageCameraFragment()

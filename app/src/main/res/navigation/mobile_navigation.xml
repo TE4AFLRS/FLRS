@@ -25,10 +25,10 @@
             android:id="@+id/action_navigation_page_register_select_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
-            android:id="@+id/action_navigation_page_register_select_to_page_insert_fragment2"
+            android:id="@+id/action_navigation_page_register_select_to_page_insert_fragment"
             app:destination="@id/page_insert_fragment" />
         <action
-            android:id="@+id/action_navigation_page_register_select_to_page_camera_fragment2"
+            android:id="@+id/action_navigation_page_register_select_to_page_camera_fragment"
             app:destination="@id/page_camera_fragment" />
     </fragment>
     <fragment
