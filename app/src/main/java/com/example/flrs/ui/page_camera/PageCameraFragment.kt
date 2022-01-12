@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat.getCodeCacheDir
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
+import androidx.navigation.fragment.findNavController
 import com.example.flrs.R
 import java.io.File
 import java.io.IOException
@@ -47,40 +48,42 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
         // TODO: Use the ViewModel
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.popBackStack()
-        }
+
+//        requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            parentFragmentManager.popBackStack()
+//        }
         val cameraButton: Button = view.findViewById(R.id.photoButton)
         imageView= view.findViewById(R.id.imageView)
-        cameraButton.setOnClickListener {
-            //カメラ機能のチェック
-            this.context?.packageManager?.let {
-                Intent(MediaStore.ACTION_IMAGE_CAPTURE).resolveActivity(it)?.let {
-                    if (checkCameraPermission()) {
-                        takePicture()
-                    } else {
-                        grantCameraPermission()
-                    }
-                }
-            }
-        }
+        takePicture()
+//        cameraButton.setOnClickListener {
+//            //カメラ機能のチェック
+//            this.context?.packageManager?.let {
+//                Intent(MediaStore.ACTION_IMAGE_CAPTURE).resolveActivity(it)?.let {
+//                    if (checkCameraPermission()) {
+//                        takePicture()
+//                    } else {
+//                        grantCameraPermission()
+//                    }
+//                }
+//            }
+//        }
 
     }
-    private fun checkCameraPermission(): Boolean {
-        return PackageManager.PERMISSION_GRANTED == activity?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) }
-    }
-
-    private fun grantCameraPermission() = activity?.let {
-        requestPermissions( arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-               takePicture()
-            }
-        }
-    }
+//    private fun checkCameraPermission(): Boolean {
+//        return PackageManager.PERMISSION_GRANTED == activity?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) }
+//    }
+//
+//    private fun grantCameraPermission() = activity?.let {
+//        requestPermissions( arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+//    }
+//
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//               takePicture()
+//            }
+//        }
+//    }
 
     private fun takePicture() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -153,12 +156,13 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
             options.setToolbarWidgetColor(getColor(requireContext(),android.R.color.white))
             options.setToolbarColor(getColor(requireContext(),android.R.color.holo_blue_dark))
             options.setStatusBarColor(getColor(requireContext(),R.color.design_default_color_primary_dark))
-            options.setActiveControlsWidgetColor(getColor(requireContext(),R.color.design_default_color_on_secondary))
+            options.setActiveControlsWidgetColor(getColor(requireContext(),R.color.gray))
             options.setCompressionFormat(Bitmap.CompressFormat.JPEG)
             options.setCompressionQuality(100)
             options.setHideBottomControls(false)
             options.setFreeStyleCropEnabled(true)
             uCrop = uCrop.withOptions(options)
+
             uCrop.start(requireContext(),this,UCrop.REQUEST_CROP)
 
         }

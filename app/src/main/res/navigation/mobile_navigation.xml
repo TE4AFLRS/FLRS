@@ -20,15 +20,29 @@
         android:id="@+id/navigation_page_register_select"
         android:name="com.example.flrs.ui.page_register_select.PageRegisterSelectFragment"
         android:label="@string/title_page_register_select"
-        tools:layout="@layout/fragment_page_register_select" />
+        tools:layout="@layout/fragment_page_register_select" >
+        <action
+            android:id="@+id/action_navigation_page_register_select_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_page_register_select_to_page_insert_fragment2"
+            app:destination="@id/page_insert_fragment" />
+        <action
+            android:id="@+id/action_navigation_page_register_select_to_page_camera_fragment2"
+            app:destination="@id/page_camera_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/page_insert_fragment"
         android:name="com.example.flrs.ui.page_insert.PageInsertFragment"
-        android:label="fragment_page_insert"
+        android:label="@string/title_page_insert"
         tools:layout="@layout/fragment_page_insert" />
     <fragment
         android:id="@+id/page_camera_fragment"
         android:name="com.example.flrs.ui.page_camera.PageCameraFragment"
-        android:label="fragment_page_camera"
-        tools:layout="@layout/fragment_page_camera" />
+        android:label="@string/title_page_camera"
+        tools:layout="@layout/fragment_page_camera" >
+        <action
+            android:id="@+id/action_page_camera_fragment_to_navigation_page_register_select"
+            app:destination="@id/navigation_page_register_select" />
+    </fragment>
 </navigation>
