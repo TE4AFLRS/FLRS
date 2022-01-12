@@ -57,10 +57,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 DividerItemDecoration(context, LinearLayoutManager(context).getOrientation())
         rv.addItemDecoration(dividerItemDecoration)
 
-        //画面戻る処理
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.popBackStack()
-        }
 
     }
 

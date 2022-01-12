@@ -9,4 +9,7 @@
     <string name="text_edit_food_name">食品名</string>
     <string name="button_delete">削除</string>
     <string name="button_register">保存</string>
+    <string name="title_page_camera">カメラで追加</string>
+    <string name="title_page_insert">食品を追加</string>
+
 </resources>
