@@ -24,8 +24,5 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         super.onViewCreated(view, savedInstanceState)
         notificationsViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
         // TODO: Use the ViewModel
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.popBackStack()
-        }
     }
 }
