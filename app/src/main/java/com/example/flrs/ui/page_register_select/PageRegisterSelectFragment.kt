@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,16 +29,15 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(PageRegisterSelectViewModel::class.java)
-//        val textView : TextView = view.findViewById(R.id.text_PageRegisterSelect)
 
-        val buttonManual : Button = view.findViewById(R.id.button_manal_register)
-        val buttonCamera : Button = view.findViewById(R.id.button_camera_register)
+        val buttonManual: Button = view.findViewById(R.id.button_manal_register)
+        val buttonCamera: Button = view.findViewById(R.id.button_camera_register)
 
-        val transaction = parentFragmentManager.beginTransaction()
-        parentFragmentManager.saveFragmentInstanceState(this)
+//        val transaction = parentFragmentManager.beginTransaction()
+//        parentFragmentManager.saveFragmentInstanceState(this)
 
-         //今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする
-        transaction.addToBackStack("PageRegisterSelectFragment")
+        //今のFragmentをスタックしておくことで遷移先から戻るボタンでもどれるようにする
+        // transaction.addToBackStack("PageRegisterSelectFragment")
 
         buttonManual.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_page_register_select_to_page_insert_fragment)
@@ -64,22 +64,36 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
 
         // TODO: Use the ViewModel
     }
+
     private fun checkCameraPermission(): Boolean {
-        return PackageManager.PERMISSION_GRANTED == activity?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) }
+        return PackageManager.PERMISSION_GRANTED == activity?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                android.Manifest.permission.CAMERA
+            )
+        }
     }
 
     private fun grantCameraPermission() = activity?.let {
-        requestPermissions( arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        requestPermissions(
+            arrayOf(android.Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_REQUEST_CODE
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 cameraTransition()
             }
         }
     }
-    private  fun cameraTransition(){
+
+    private fun cameraTransition() {
         findNavController().navigate(R.id.action_navigation_page_register_select_to_page_camera_fragment)
 //        val transaction = parentFragmentManager.beginTransaction()
 //        parentFragmentManager.saveFragmentInstanceState(this)

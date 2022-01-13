@@ -1,6 +1,7 @@
 package com.example.flrs
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,9 +19,20 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_notifications,R.id.navigation_page_register_select,R.id.page_camera_fragment,R.id.page_insert_fragment))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home,
+                R.id.navigation_notifications,
+                R.id.navigation_page_register_select,
+                R.id.page_camera_fragment,
+                R.id.page_insert_fragment
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        onBackPressedDispatcher.addCallback(this) {
+            moveTaskToBack(true)
+        }
     }
 }

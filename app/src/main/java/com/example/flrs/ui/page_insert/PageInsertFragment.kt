@@ -32,7 +32,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         // TODO: Use the ViewModel
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.popBackStack()
+           findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_page_register_select)
         }
 
         mCategoriesDao =FoodsDatabase.getInstance(requireContext()).categoriesDao()
@@ -64,7 +64,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
 //            // R.id.FragmentContainerに入っているFragmentを取り除いて、新しく別のFragmentを入れる //
 //            transaction.replace(R.id.nav_host_fragment, homeFragment)
 //            transaction.commit()
-            findNavController().navigate(R.id.action_navigation_page_register_select_to_navigation_home)
+            findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_home)
         }
     }
 

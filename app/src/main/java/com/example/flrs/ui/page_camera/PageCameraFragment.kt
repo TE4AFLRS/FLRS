@@ -44,6 +44,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     private val PIC_VAL = 2
     private lateinit var viewModel: PageCameraViewModel
     private lateinit var imageView: ImageView
+    private  lateinit var photoButton:Button
     private val CAMERA_REQUEST_CODE = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
     private var photoUri: Uri? = null
@@ -54,8 +55,18 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         viewModel = ViewModelProvider(this).get(PageCameraViewModel::class.java)
         // TODO: Use the ViewModel
 
+//        requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            findNavController().navigate(R.id.action_page_camera_fragment_to_navigation_page_register_select)
+//        }
+
+        photoButton = view.findViewById(R.id.photoButton)
+        photoButton.text = this.toString()
         imageView = view.findViewById(R.id.imageView)
         takePicture()
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.action_page_camera_fragment_to_navigation_page_register_select)
+        }
 
     }
 
