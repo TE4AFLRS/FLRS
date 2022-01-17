@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -46,7 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         rv.setHasFixedSize(true)
         rv.layoutManager =
-                androidx.recyclerview.widget.LinearLayoutManager(context)
+            androidx.recyclerview.widget.LinearLayoutManager(context)
 
         rv.adapter = adapter
         val swipeToDismissTouchHelper = getSwipeToDismissTouchHelper(adapter)
@@ -54,83 +55,91 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //下線
         val dividerItemDecoration =
-                DividerItemDecoration(context, LinearLayoutManager(context).getOrientation())
+            DividerItemDecoration(context, LinearLayoutManager(context).getOrientation())
         rv.addItemDecoration(dividerItemDecoration)
 
 
     }
 
     @Delete
-    private fun deleteFoods(position:Int){
-        if(db_list.isEmpty())return
-        val deleteFoods:Int =  db_list.get(position).food_id.toInt()
+    private fun deleteFoods(position: Int) {
+        if (db_list.isEmpty()) return
+        val deleteFoods: Int = db_list.get(position).food_id.toInt()
         mFoodsDao.delete(deleteFoods)
     }
 
 
-
     //カードのスワイプアクションの定義
     private fun getSwipeToDismissTouchHelper(adapter: RecyclerView.Adapter<HomeViewHolder>) =
-            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-                    0,
-                    ItemTouchHelper.LEFT
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            //スワイプ時に実行
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                //データリストからスワイプしたデータを削除
+                deleteFoods(viewHolder.bindingAdapterPosition)
+                db_list.removeAt(viewHolder.adapterPosition)
+
+                System.out.println("このIDを消したよ" + viewHolder.itemId)
+                //リストからスワイプしたカードを削除
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+
+            //スワイプした時の背景を設定
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
             ) {
-                override fun onMove(
-                        recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        target: RecyclerView.ViewHolder
-                ): Boolean {
-                    return false
-                }
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                val itemView = viewHolder.itemView
+                val background = ColorDrawable()
+                background.color = Color.parseColor("#f44336")
 
-                //スワイプ時に実行
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    //データリストからスワイプしたデータを削除
-                    deleteFoods(viewHolder.bindingAdapterPosition)
-                    db_list.removeAt(viewHolder.adapterPosition)
-
-                    System.out.println("このIDを消したよ" + viewHolder.itemId)
-                    //リストからスワイプしたカードを削除
-                    adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                }
-
-                //スワイプした時の背景を設定
-                override fun onChildDraw(
-                        c: Canvas,
-                        recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder,
-                        dX: Float,
-                        dY: Float,
-                        actionState: Int,
-                        isCurrentlyActive: Boolean
-                ) {
-                    super.onChildDraw(
-                            c,
-                            recyclerView,
-                            viewHolder,
-                            dX,
-                            dY,
-                            actionState,
-                            isCurrentlyActive
+                val deleteIcon = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_delete
+                )
+                val iconMarginVertical =
+                    (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight)/3
+                val iconWidth = (viewHolder.itemView.width-(deleteIcon!!.intrinsicWidth*4))
+                if (dX < 0) {
+                    deleteIcon.setBounds(
+                        itemView.left+iconMarginVertical+iconWidth,
+                        itemView.top +iconMarginVertical,
+                        itemView.right-iconMarginVertical,
+                        itemView.bottom-iconMarginVertical
                     )
-                    val itemView = viewHolder.itemView
-                    val background = ColorDrawable()
-                    background.color = Color.parseColor("#f44336")
-                    if (dX < 0)
-                        background.setBounds(
-                                itemView.right + dX.toInt(),
-                                itemView.top,
-                                itemView.right,
-                                itemView.bottom
-                        )
-                    else
-                        background.setBounds(
-                                itemView.left,
-                                itemView.top,
-                                itemView.left + dX.toInt(),
-                                itemView.bottom
-                        )
-                    background.draw(c)
+                    background.setBounds(
+                        itemView.left + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
                 }
-            })
+                background.draw(c)
+                deleteIcon.draw(c)
+            }
+        })
 }
