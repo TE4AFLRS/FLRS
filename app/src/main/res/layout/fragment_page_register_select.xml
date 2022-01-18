@@ -28,6 +28,7 @@
         android:layout_height="180dp"
         android:layout_marginStart="40dp"
         android:layout_marginBottom="260dp"
+        android:drawableTop="@drawable/ic_delete"
         android:text="入力して追加"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_camera_register"

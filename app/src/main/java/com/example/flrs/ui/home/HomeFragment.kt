@@ -31,11 +31,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     var db_list = mutableListOf<RowModel>()
     lateinit var mFoodsDao: FoodsDao
+    var backGroundColor = R.color.almond
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // TODO: Use the ViewModel
+
+        //view.setBackgroundResource(backGroundColor)
 
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
