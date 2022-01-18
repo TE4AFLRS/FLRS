@@ -149,15 +149,15 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
             //uCropのオプションを設定
             val options = UCrop.Options()
             options.setToolbarTitle("画像切り出し画面")
-            options.setToolbarWidgetColor(getColor(requireContext(), android.R.color.white))
-            options.setToolbarColor(getColor(requireContext(), android.R.color.holo_blue_dark))
+            options.setToolbarWidgetColor(getColor(requireContext(), R.color.darkGray))
+            options.setToolbarColor(getColor(requireContext(), R.color.almond))
             options.setStatusBarColor(
                 getColor(
                     requireContext(),
-                    R.color.design_default_color_primary_dark
+                    R.color.almond
                 )
             )
-            options.setActiveControlsWidgetColor(getColor(requireContext(), R.color.gray))
+            options.setActiveControlsWidgetColor(getColor(requireContext(), R.color.almond))
             options.setCompressionFormat(Bitmap.CompressFormat.JPEG)
             options.setCompressionQuality(100)
             options.setHideBottomControls(false)
