@@ -39,6 +39,10 @@
         <action
             android:id="@+id/action_page_insert_fragment_to_navigation_page_register_select"
             app:destination="@id/navigation_page_register_select" />
+
+        <argument
+            android:name="content"
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/page_camera_fragment"
@@ -48,5 +52,8 @@
         <action
             android:id="@+id/action_page_camera_fragment_to_navigation_page_register_select"
             app:destination="@id/navigation_page_register_select" />
+        <action
+            android:id="@+id/action_page_camera_fragment_to_page_insert_fragment"
+            app:destination="@id/page_insert_fragment" />
     </fragment>
 </navigation>

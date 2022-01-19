@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.activity.addCallback
 import androidx.core.view.children
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.room.Insert
 import com.example.flrs.*
 import com.example.flrs.ui.home.HomeFragment
@@ -21,7 +22,8 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
     companion object {
         fun newInstance() = PageInsertFragment()
     }
-
+    private  val args:PageInsertFragmentArgs by navArgs()
+    private lateinit var content:String
     private lateinit var viewModel: PageInsertViewModel
     lateinit var mCategoriesDao: CategoriesDao
     lateinit var mFoodsDao: FoodsDao
@@ -34,7 +36,6 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
            findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_page_register_select)
         }
-
         mCategoriesDao =FoodsDatabase.getInstance(requireContext()).categoriesDao()
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         var list:List<CategoryRow> = mCategoriesDao.getAll()
@@ -43,6 +44,10 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         val saveButton = view.findViewById<Button>(R.id.save_button)
         val vg = view.findViewById<View>(R.id.insert_table) as ViewGroup
         val fab: FloatingActionButton = view.findViewById(R.id.insert_fab)
+
+        if(args.content.isNotEmpty()){
+            content=args.content
+        }
 
         addNewRow(vg, adapter)
 
@@ -73,7 +78,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         val row = (table.getChildAt(table.childCount - 1) as LinearLayout)
         val spinner:Spinner = row.findViewById(R.id.spinner)
         spinner.adapter = adapter
-        (row.getChildAt(0)  as ImageButton)?.setOnClickListener{
+        (row.getChildAt(0)  as ImageButton).setOnClickListener{
             if (table.childCount > 1) {
                 vg.removeView(row)
             }
