@@ -58,7 +58,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //下線
         val dividerItemDecoration =
-            DividerItemDecoration(context, LinearLayoutManager(context).getOrientation())
+            DividerItemDecoration(context, LinearLayoutManager(context).orientation)
         rv.addItemDecoration(dividerItemDecoration)
 
 
@@ -126,7 +126,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 )
                 val iconMarginVertical =
                     (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight)/3
-                val iconWidth = (viewHolder.itemView.width-(deleteIcon!!.intrinsicWidth*4))
+                val iconWidth = (viewHolder.itemView.width-(deleteIcon.intrinsicWidth*4))
                 if (dX < 0) {
                     deleteIcon.setBounds(
                         itemView.left+iconMarginVertical+iconWidth,

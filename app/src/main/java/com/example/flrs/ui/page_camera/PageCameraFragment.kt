@@ -67,7 +67,6 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
 //        }
 
         photoButton = view.findViewById(R.id.photoButton)
-        photoButton.text = this.toString()
         textView = view.findViewById(R.id.textView)
         takePicture()
 
@@ -116,6 +115,9 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
                         var imagePath = imageFromPath(requireContext(),resultUri)
 
                         recognizeText(imagePath)
+
+//                        val action = PageCameraFragmentDirections.actionPageCameraFragmentToPageInsertFragment(content)
+//                        findNavController().navigate(action)
                     }
                 } else{
                     findNavController().navigate(R.id.action_page_camera_fragment_to_navigation_page_register_select)
@@ -143,7 +145,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
     private fun openCropImage(uri: Uri?) {
         val fileName = "crop.jpg"
         val cropFile = File(requireContext().cacheDir, fileName)
-        cropFile?.let { file ->
+        cropFile.let { file ->
             val cropUri = Uri.fromFile(file)
             var uCrop = UCrop.of(uri!!, cropUri)
             //uCropのオプションを設定
@@ -184,14 +186,14 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
         // [START get_detector_default]
         val recognizer = TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
         // [END get_detector_default]
-
         // [START run_detector]
         val result = recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 // Task completed successfully
                 // [START_EXCLUDE]
                 // [START get_text]
-                textView.setText(visionText.text)
+                val action = PageCameraFragmentDirections.actionPageCameraFragmentToPageInsertFragment(visionText.text)
+                findNavController().navigate(action)
 
                 // [END get_text]
                 // [END_EXCLUDE]
@@ -200,10 +202,7 @@ class PageCameraFragment : Fragment(R.layout.fragment_page_camera) {
                 // Task failed with an exception
                 // ...
             }
-        // [END run_detector]
-
-
-//        print(result)
+//        // [END run_detector]
     }
 
 
