@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_navigation_page_register_select_to_page_insert_fragment"
             app:destination="@id/page_insert_fragment" />
-        <action
-            android:id="@+id/action_navigation_page_register_select_to_page_camera_fragment"
-            app:destination="@id/page_camera_fragment" />
     </fragment>
     <fragment
         android:id="@+id/page_insert_fragment"
@@ -41,7 +38,7 @@
             app:destination="@id/navigation_page_register_select" />
 
         <argument
-            android:name="content"
+            android:name="flag_state"
             app:argType="string"/>
     </fragment>
     <fragment
