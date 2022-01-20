@@ -12,9 +12,12 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+
 import com.example.flrs.R
 import com.example.flrs.ui.page_camera.PageCameraFragment
+import com.example.flrs.ui.page_camera.PageCameraFragmentDirections
 import com.example.flrs.ui.page_insert.PageInsertFragment
 
 class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_select) {
@@ -25,6 +28,7 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
 
     private lateinit var viewModel: PageRegisterSelectViewModel
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
+    private  val flag_state = "camera"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,7 +62,6 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
                     }
                 }
             }
-
 
         }
 
@@ -94,7 +97,8 @@ class PageRegisterSelectFragment : Fragment(R.layout.fragment_page_register_sele
     }
 
     private fun cameraTransition() {
-        findNavController().navigate(R.id.action_navigation_page_register_select_to_page_camera_fragment)
+        val action = PageRegisterSelectFragmentDirections.actionNavigationPageRegisterSelectToPageInsertFragment(flag_state)
+        findNavController().navigate(action)
 //        val transaction = parentFragmentManager.beginTransaction()
 //        parentFragmentManager.saveFragmentInstanceState(this)
 //        val cameraFragment = PageCameraFragment()
