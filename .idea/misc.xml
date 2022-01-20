@@ -7,9 +7,11 @@
         <entry key="app/src/main/res/drawable/ic_page_register_select_black_24dp.xml" value="0.15092592592592594" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/food_recyclerview_row.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_page_camera.xml" value="0.11510416666666666" />
         <entry key="app/src/main/res/layout/fragment_page_insert.xml" value="0.10190217391304347" />
         <entry key="app/src/main/res/layout/fragment_page_register_select.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/page_insert_table_row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/page_insert_table_row.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.11574074074074074" />
       </map>
     </option>

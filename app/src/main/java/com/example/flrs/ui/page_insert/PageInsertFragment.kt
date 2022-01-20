@@ -2,7 +2,6 @@ package com.example.flrs.ui.page_insert
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.room.Insert
 import com.example.flrs.*
 import com.example.flrs.ui.home.HomeFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.reflect.InvocationTargetException
 import java.time.LocalDate
 
 class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
@@ -45,8 +45,17 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         val vg = view.findViewById<View>(R.id.insert_table) as ViewGroup
         val fab: FloatingActionButton = view.findViewById(R.id.insert_fab)
 
-        if(args.content.isNotEmpty()){
-            content=args.content
+        try {
+            if (args.content.isNotEmpty()) {
+                content = args.content
+                val foodName = content.split("\n")
+                for (a in foodName) {
+                    addNewRow(vg,adapter)
+                    ((vg.getChildAt(vg.childCount-1)as LinearLayout).getChildAt(1)as EditText).setText(a)
+                }
+            }
+        }catch (e:InvocationTargetException){
+            print("not found args.content")
         }
 
         addNewRow(vg, adapter)
@@ -54,6 +63,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         // 行を追加
         fab.setOnClickListener {
             addNewRow(vg, adapter)
+
         }
 
         saveButton.setOnClickListener {
