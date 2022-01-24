@@ -160,7 +160,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
                     recognizeText(imagePath)
                 }
             } else {
-                findNavController().navigate(R.id.action_page_camera_fragment_to_navigation_page_register_select)
+                findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_page_register_select)
             }
         }
     }
@@ -188,7 +188,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
             var uCrop = UCrop.of(uri!!, cropUri)
             //uCropのオプションを設定
             val options = UCrop.Options()
-            options.setToolbarTitle("画像切り出し画面")
+            options.setToolbarTitle("食品名を切り抜いてください")
             options.setToolbarWidgetColor(
                 ContextCompat.getColor(
                     requireContext(),
