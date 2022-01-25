@@ -91,12 +91,27 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
         }
 
         saveButton.setOnClickListener {
+            var flag = 1
             for (i in vg.children) {
                 val name = i.findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
-                val id = i.findViewById<Spinner>(R.id.spinner).selectedItemPosition
-                insertFoods(name, list[id].category_id)
+                if(name == ""){
+                    //ポップアップを表示したい
+                    val myToast = Toast.makeText(requireContext(),"食品名が未入力の物があります。\n食品名は必須入力です。",Toast.LENGTH_SHORT)
+                    myToast.show()
+                    flag = 1
+                    break
+                }else{
+                    flag = 0
+                }
             }
-            findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_home)
+            if (flag == 0){
+                for(i in vg.children){
+                    val name = i.findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
+                    val id = i.findViewById<Spinner>(R.id.spinner).selectedItemPosition
+                    insertFoods(name, list[id].category_id)
+                }
+                findNavController().navigate(R.id.action_page_insert_fragment_to_navigation_home)
+            }
         }
 
 
