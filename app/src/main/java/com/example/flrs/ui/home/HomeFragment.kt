@@ -44,7 +44,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         db_list = mFoodsDao.getAll().toMutableList()
 
 
-        db_list
         val rv = view.findViewById<RecyclerView>(R.id.food_recyclerview)
         val adapter = HomeViewAdapter(db_list)
 
@@ -60,7 +59,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val dividerItemDecoration =
             DividerItemDecoration(context, LinearLayoutManager(context).orientation)
         rv.addItemDecoration(dividerItemDecoration)
-
 
     }
 
