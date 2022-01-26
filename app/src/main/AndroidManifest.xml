@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-feature android:name="android.hardware.camera2"/>
     <queries>
         <intent>
@@ -22,6 +23,16 @@
         android:roundIcon="@mipmap/ic_flrs_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FLRS">
+        <receiver
+            android:name="com.example.flrs.NotificationProcess"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
