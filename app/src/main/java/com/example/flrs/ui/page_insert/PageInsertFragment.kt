@@ -84,6 +84,7 @@ class PageInsertFragment : Fragment(R.layout.fragment_page_insert) {
             }
         } catch (e: InvocationTargetException) {
             print("not found args.content")
+            addNewRow(vg,adapter)
         }
 
         fab.setOnClickListener {

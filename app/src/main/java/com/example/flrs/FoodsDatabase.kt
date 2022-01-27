@@ -28,7 +28,8 @@ abstract class FoodsDatabase:RoomDatabase() {
                                     "(1, '卵', 14)," +
                                     "(2, '精肉', 3)," +
                                     "(3, '鮮魚', 3)," +
-                                    "(4, '牛乳', 2)"
+                                    "(4, '牛乳', 2)," +
+                                    "(5,'特売肉',1)"
                             db.execSQL(sql)
                         }
                     })
