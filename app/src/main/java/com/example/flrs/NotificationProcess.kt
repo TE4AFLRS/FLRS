@@ -32,7 +32,7 @@ class NotificationProcess : BroadcastReceiver() {
             if (period < LocalDate.now()) {
                 pastcnt++
             }
-            if (period == LocalDate.now().plusDays(1)) {
+            if (period == LocalDate.now() || period.minusDays(1)== LocalDate.now()) {
                 beforecnt++
             }
         }
