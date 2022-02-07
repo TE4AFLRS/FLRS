@@ -19,6 +19,7 @@ import com.example.flrs.FoodsDao
 import com.example.flrs.FoodsDatabase
 import com.example.flrs.R
 import com.example.flrs.RowModel
+import java.time.LocalDate
 import kotlin.math.log
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -43,9 +44,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
 
+        var sortedList =  db_list.sortedBy { myObject -> LocalDate.parse(myObject.register_date).plusDays(myObject.period.toLong()) }
+
+
 
         val rv = view.findViewById<RecyclerView>(R.id.food_recyclerview)
-        val adapter = HomeViewAdapter(db_list)
+        val adapter = HomeViewAdapter(sortedList)
 
         rv.setHasFixedSize(true)
         rv.layoutManager =
