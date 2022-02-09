@@ -31,6 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var homeViewModel: HomeViewModel
 
     var db_list = mutableListOf<RowModel>()
+    var sortedList= mutableListOf<RowModel>()
     lateinit var mFoodsDao: FoodsDao
     var backGroundColor = R.color.almond
 
@@ -44,7 +45,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mFoodsDao = FoodsDatabase.getInstance(requireContext()).foodsDao()
         db_list = mFoodsDao.getAll().toMutableList()
 
-        var sortedList =  db_list.sortedBy { myObject -> LocalDate.parse(myObject.register_date).plusDays(myObject.period.toLong()) }
+        sortedList =  db_list.sortedBy { myObject -> LocalDate.parse(myObject.register_date).plusDays(myObject.period.toLong()) }.toMutableList()
 
 
 
@@ -92,7 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 //データリストからスワイプしたデータを削除
                 deleteFoods(viewHolder.bindingAdapterPosition)
-                db_list.removeAt(viewHolder.adapterPosition)
+                sortedList.removeAt(viewHolder.adapterPosition)
 
                 System.out.println("このIDを消したよ" + viewHolder.itemId)
                 //リストからスワイプしたカードを削除
